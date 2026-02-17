@@ -1,6 +1,6 @@
 [submodule "sleepyleo-website"]
 	path = sleepyleo-website
-	url = git@github.com:SleepyLe0/sleepyleo-website.git
+	url = https://github.com/SleepyLe0/sleepyleo-website.git
 [submodule "sleepyleo-admin"]
 	path = sleepyleo-admin
-	url = git@github.com:SleepyLe0/sleepyleo-admin.git
+	url = https://github.com/SleepyLe0/sleepyleo-admin.git
