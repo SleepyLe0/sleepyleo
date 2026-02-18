@@ -1,0 +1,10 @@
+{
+  "name": "sleepyleo",
+  "private": true,
+  "scripts": {
+    "submodule:init": "git submodule update --init --recursive",
+    "dev": "docker compose watch",
+    "start": "docker compose up",
+    "stop": "docker compose down"
+  }
+}

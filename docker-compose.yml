@@ -9,12 +9,37 @@ services:
       db:
         condition: service_healthy
     env_file: .env
-    volumes:
-      - ./sleepyleo-website/app:/app/app
-      - ./sleepyleo-website/components:/app/components
-      - ./sleepyleo-website/lib:/app/lib
-      - ./sleepyleo-website/public:/app/public
-      - ./sleepyleo-website/prisma:/app/prisma
+    develop:
+      watch:
+        # Source dirs: sync files into container overlayfs → triggers inotify → Next.js HMR
+        - action: sync
+          path: ./sleepyleo-website/app
+          target: /app/app
+        - action: sync
+          path: ./sleepyleo-website/components
+          target: /app/components
+        - action: sync
+          path: ./sleepyleo-website/lib
+          target: /app/lib
+        - action: sync
+          path: ./sleepyleo-website/public
+          target: /app/public
+        # Config files that require a server restart to take effect
+        - action: sync+restart
+          path: ./sleepyleo-website/prisma
+          target: /app/prisma
+        - action: sync+restart
+          path: ./sleepyleo-website/next.config.ts
+          target: /app/next.config.ts
+        - action: sync+restart
+          path: ./sleepyleo-website/tsconfig.json
+          target: /app/tsconfig.json
+        - action: sync+restart
+          path: ./sleepyleo-website/postcss.config.mjs
+          target: /app/postcss.config.mjs
+        # Dependency changes require a full image rebuild
+        - action: rebuild
+          path: ./sleepyleo-website/package.json
     networks:
       - sleepyleo-network
 
@@ -28,12 +53,34 @@ services:
       db:
         condition: service_healthy
     env_file: .env
-    volumes:
-      - ./sleepyleo-admin/app:/app/app
-      - ./sleepyleo-admin/components:/app/components
-      - ./sleepyleo-admin/lib:/app/lib
-      - ./sleepyleo-admin/public:/app/public
-      - ./sleepyleo-admin/prisma:/app/prisma
+    develop:
+      watch:
+        - action: sync
+          path: ./sleepyleo-admin/app
+          target: /app/app
+        - action: sync
+          path: ./sleepyleo-admin/components
+          target: /app/components
+        - action: sync
+          path: ./sleepyleo-admin/lib
+          target: /app/lib
+        - action: sync
+          path: ./sleepyleo-admin/public
+          target: /app/public
+        - action: sync+restart
+          path: ./sleepyleo-admin/prisma
+          target: /app/prisma
+        - action: sync+restart
+          path: ./sleepyleo-admin/next.config.ts
+          target: /app/next.config.ts
+        - action: sync+restart
+          path: ./sleepyleo-admin/tsconfig.json
+          target: /app/tsconfig.json
+        - action: sync+restart
+          path: ./sleepyleo-admin/postcss.config.mjs
+          target: /app/postcss.config.mjs
+        - action: rebuild
+          path: ./sleepyleo-admin/package.json
     networks:
       - sleepyleo-network
 
