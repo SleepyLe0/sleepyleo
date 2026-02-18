@@ -1,39 +1,23 @@
 services:
   app:
-    build:
-      context: ./sleepyleo-website
-      dockerfile: Dockerfile.dev
+    build: ./sleepyleo-website
     ports:
       - "3000:3000"
     depends_on:
       db:
         condition: service_healthy
     env_file: .env
-    volumes:
-      - ./sleepyleo-website/app:/app/app
-      - ./sleepyleo-website/components:/app/components
-      - ./sleepyleo-website/lib:/app/lib
-      - ./sleepyleo-website/public:/app/public
-      - ./sleepyleo-website/prisma:/app/prisma
     networks:
       - sleepyleo-network
 
   admin:
-    build:
-      context: ./sleepyleo-admin
-      dockerfile: Dockerfile.dev
+    build: ./sleepyleo-admin
     ports:
       - "3001:3000"
     depends_on:
       db:
         condition: service_healthy
     env_file: .env
-    volumes:
-      - ./sleepyleo-admin/app:/app/app
-      - ./sleepyleo-admin/components:/app/components
-      - ./sleepyleo-admin/lib:/app/lib
-      - ./sleepyleo-admin/public:/app/public
-      - ./sleepyleo-admin/prisma:/app/prisma
     networks:
       - sleepyleo-network
 
