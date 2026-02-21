@@ -4,6 +4,7 @@
   "scripts": {
     "init": "git submodule update --init --recursive",
     "update": "git submodule update --remote --merge",
+    "prisma:generate": "cd sleepyleo-website && bunx prisma generate && cd ../sleepyleo-admin && bunx prisma generate",
     "dev": "docker compose watch",
     "deploy": "docker compose -f docker-compose.prod.yml up -d --build",
     "start": "docker compose up",
