@@ -3,7 +3,7 @@ services:
     image: ghcr.io/${GITHUB_OWNER}/sleepyleo-website:latest
     pull_policy: always
     ports:
-      - "${PORT}:3000"
+      - "${WEBSITE_PORT}:3000"
     depends_on:
       db:
         condition: service_healthy
@@ -17,6 +17,8 @@ services:
     pull_policy: always
     ports:
       - "${ADMIN_PORT}:3000"
+    environment:
+      - PORT=3000
     depends_on:
       db:
         condition: service_healthy
