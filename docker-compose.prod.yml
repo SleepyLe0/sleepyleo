@@ -1,0 +1,49 @@
+services:
+  app:
+    image: ghcr.io/${GITHUB_OWNER}/sleepyleo-website:latest
+    pull_policy: always
+    ports:
+      - "${PORT}:3000"
+    depends_on:
+      db:
+        condition: service_healthy
+    env_file: .env
+    restart: unless-stopped
+    networks:
+      - sleepyleo-network
+
+  admin:
+    image: ghcr.io/${GITHUB_OWNER}/sleepyleo-admin:latest
+    pull_policy: always
+    ports:
+      - "${ADMIN_PORT}:3000"
+    depends_on:
+      db:
+        condition: service_healthy
+    env_file: .env
+    restart: unless-stopped
+    networks:
+      - sleepyleo-network
+
+  db:
+    image: postgres:16-alpine
+    expose:
+      - "5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    env_file: .env
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U sleepyleo -d sleepyleo_db"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    restart: unless-stopped
+    networks:
+      - sleepyleo-network
+
+volumes:
+  postgres_data:
+
+networks:
+  sleepyleo-network:
+    driver: bridge
